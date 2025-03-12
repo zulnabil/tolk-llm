@@ -4,6 +4,7 @@ const readline = require('readline')
 
 const LLM_API_BASE_URL = process.env.LLM_API_BASE_URL // required
 const LLM_CHAT_MODEL = process.env.LLM_CHAT_MODEL // required
+const LLM_API_KEY = process.env.LLM_API_KEY // optional
 const DISABLE_STREAM = process.env.DISABLE_STREAM
 
 const print = (text) => process.stdout.write(text)
@@ -20,7 +21,9 @@ const chat = async (messages) => {
     try {
         const response = await fetch(url, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 
+                ...(LLM_API_KEY && { 'Authorization': `Bearer ${LLM_API_KEY}` })
+             },
             body
         })
 
